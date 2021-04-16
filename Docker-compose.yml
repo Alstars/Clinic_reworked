@@ -1,0 +1,33 @@
+---
+version: "3.8"
+volumes:
+  database_volume:
+
+
+services:
+  database:
+    image: postgres:13
+    container_name: database_Rh
+    tty: true
+    environment:
+      POSTGRES_PASSWORD: "1243"
+      POSTGRES_DB: "Rehabilitation"
+      POSTGRES_USER: "postgres"
+    volumes:
+      - type: volume
+        source: database_volume
+        target: /var/lib/postgresql/data
+    expose:
+      - 5432
+
+
+  application:
+    image: newer_clinic
+    container_name: application
+    depends_on:
+      - database
+    tty: true
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
